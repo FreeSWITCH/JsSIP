@@ -314,6 +314,10 @@ JsSIP.Session.prototype.receiveRequest = function(request) {
           this.status = JsSIP.c.SESSION_CONFIRMED;
         }
         break;
+      case JsSIP.c.INFO:
+        console.info(JsSIP.c.LOG_TRANSPORT + 'XXX RECV INFO\n');
+        request.reply(200, JsSIP.c.REASON_200);
+        break;
       case JsSIP.c.BYE:
         if(this.status === JsSIP.c.SESSION_CONFIRMED) {
           request.reply(200);

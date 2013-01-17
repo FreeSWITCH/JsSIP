@@ -145,6 +145,7 @@ JsSIP.grammar = (function(){
         "REGISTERm": parse_REGISTERm,
         "SUBSCRIBEm": parse_SUBSCRIBEm,
         "NOTIFYm": parse_NOTIFYm,
+	"INFOm": parse_INFOm,
         "Method": parse_Method,
         "Status_Line": parse_Status_Line,
         "Status_Code": parse_Status_Code,
@@ -7482,7 +7483,22 @@ JsSIP.grammar = (function(){
         }
         return result0;
       }
-      
+
+      function parse_INFOm() {
+        var result0;
+
+        if (input.substr(pos, 4) === "INFO") {
+          result0 = "INFO";
+          pos += 4;
+        } else {
+          result0 = null;
+          if (reportFailures === 0) {
+            matchFailed("\"INFO\"");
+          }
+        }
+        return result0;
+      }
+
       function parse_Method() {
         var result0;
         var pos0;
@@ -7504,7 +7520,10 @@ JsSIP.grammar = (function(){
                     if (result0 === null) {
                       result0 = parse_NOTIFYm();
                       if (result0 === null) {
-                        result0 = parse_token();
+			  result0 = parse_INFOm();
+                          if (result0 === null) {
+                            result0 = parse_token();
+			}
                       }
                     }
                   }
